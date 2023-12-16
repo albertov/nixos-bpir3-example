@@ -6,14 +6,14 @@
 }:
 let
   extraPatches = [
-      ./mt7986-persistent-mac-from-cpu-uid.patch
-      ./mt7986-persistent-wlan-mac-from-cpu-uid.patch
-    ];
+    ./mt7986-persistent-mac-from-cpu-uid.patch
+    ./mt7986-persistent-wlan-mac-from-cpu-uid.patch
+  ];
 in
 {
   ubootBananaPiR3 = (buildUBoot {
     defconfig = "mt7986a_bpir3_sd_defconfig";
-    extraMeta.platforms = ["aarch64-linux"];
+    extraMeta.platforms = [ "aarch64-linux" ];
     extraPatches = extraPatches;
     postPatch = ''
       cp ${./mt7986-nixos.env} board/mediatek/mt7986/mt7986-nixos.env

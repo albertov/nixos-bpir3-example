@@ -1,6 +1,6 @@
 { lib
 , linuxKernel
-, linux_6_4
+, linux_6_6
 , copyPathToStore
 , ...
 }:
@@ -24,19 +24,20 @@ let
     }
   ];
 
-  linuxPackages_bpir3_minimal = let
-    base = linux_6_4;
-    bpir3_minimal = linuxKernel.customPackage {
-      inherit (base) version modDirVersion src;
-      # A working config cannot be built with structedExtraConfig...
-      # To disable, say, NET_DSA_TAG_BRCM, B53 needs to first be disabled, which has not yet been prompted for yet.
-      # To disable B53, B53_SRAB_DRIVER needs to be disabled, which is prompted afterwards.
-      configfile = copyPathToStore ./bpir3_kernel.config;
-    };
-  in
+  linuxPackages_bpir3_minimal =
+    let
+      base = linux_6_6;
+      bpir3_minimal = linuxKernel.customPackage {
+        inherit (base) version modDirVersion src;
+        # A working config cannot be built with structedExtraConfig...
+        # To disable, say, NET_DSA_TAG_BRCM, B53 needs to first be disabled, which has not yet been prompted for yet.
+        # To disable B53, B53_SRAB_DRIVER needs to be disabled, which is prompted afterwards.
+        configfile = copyPathToStore ./bpir3_kernel.config;
+      };
+    in
     bpir3_minimal;
 
-  linux_bpir3 = linux_6_4.override {
+  linux_bpir3 = linux_6_6.override {
     inherit kernelPatches;
 
     # This will take ~22GB to build.  /tmp better be big.
@@ -71,11 +72,12 @@ let
       # WLAN
       WLAN = yes;
       WLAN_VENDOR_MEDIATEK = yes;
-      MT76_CORE  = module;
+      MT76_CORE = module;
       MT76_LEDS = yes;
       MT76_CONNAC_LIB = module;
       MT7815E = module;
       MT7986_WMAC = yes;
+      CONFIG_MT798X_WMAC = yes;
       # Pinctrl
       EINT_MTK = yes;
       PINCTRL_MTK = yes;
