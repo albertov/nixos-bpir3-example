@@ -42,8 +42,8 @@ in
         compressImage = false;
 
         buildCommand = ''
-          # 512MB should provide room enough for a couple of kernels
-          bootPartSizeMB=512
+          # 5120MB should provide room enough for a couple of kernels
+          bootPartSizeMB=5120
           root_fs=${rootfsImage}
 
           mkdir -p $out/nix-support $out/sd-image
